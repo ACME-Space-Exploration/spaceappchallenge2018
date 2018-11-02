@@ -69,8 +69,6 @@ void disembarkLapka() {
 }
 
 void embarkLapka() {
-  Serial.println(zoomOutCount);
-  Serial.println(zoomInCount);
   while (zoomOutCount != 0) {
     zoomIn();
   }
@@ -121,7 +119,7 @@ void zoomIn() {
       zoomOutCount--;
     }
   } else {
-    Serial.println("Cannot zoom more");
+    Serial.write("Cannot zoom more");
   }
 }
 
@@ -139,7 +137,7 @@ void zoomOut() {
       zoomInCount--;
     }
   } else {
-    Serial.println("Cannot zoom more");
+    Serial.write("Cannot zoom more");
   }
 }
 
@@ -147,45 +145,45 @@ void processIncomingCommand(int incomingCommand) {
   if (incomingCommand == 49) { //disembark
     if (currentBaseDegree == 180) {
       if (isEmbarked) {
-        Serial.println("Disembarking");
+        Serial.write("Disembarking");
         disembarkLapka();
-        Serial.println("Finished disembarking");
+        Serial.write("Finished disembarking");
       } else {
-        Serial.println("Already disembarked, ignoring");
+        Serial.write("Already disembarked, ignoring");
       }
     } else {
-      Serial.println("Cannot disembark in this position");
+      Serial.write("Cannot disembark in this position");
     }
   }
   if (incomingCommand == 50) { //embark
     if (currentBaseDegree == 180) {
       if (isEmbarked) {
-        Serial.println("Already embarked, ignoring");
+        Serial.write("Already embarked, ignoring");
       } else {
-        Serial.println("Embarking");
+        Serial.write("Embarking");
         embarkLapka();
-        Serial.println("Finished embarking");
+        Serial.write("Finished embarking");
       }
     } else {
-      Serial.println("Cannot embark in this position");
+      Serial.write("Cannot embark in this position");
     }
   }
   if (incomingCommand == 51) { //right
     if (currentBaseDegree == 0) {
-      Serial.println("Cannot go righter");
+      Serial.write("Cannot go righter");
     } else {
-      Serial.println("Turning right");
+      Serial.write("Turning right");
       turnRight();
-      Serial.println("Finished turning right");
+      Serial.write("Finished turning right");
     }
   }
   if (incomingCommand == 52) { //left
     if (currentBaseDegree == 180) {
-      Serial.println("Cannot go lefter");
+      Serial.write("Cannot go lefter");
     } else {
-      Serial.println("Turning left");
+      Serial.write("Turning left");
       turnLeft();
-      Serial.println("Finished turning left");
+      Serial.write("Finished turning left");
     }
   }
   if (incomingCommand == 53) { //zoom in
@@ -200,7 +198,7 @@ void loop() {
   if (Serial.available() > 0) {
     int incomingCommand = Serial.read();
     Serial.print("I received: ");
-    Serial.println(incomingCommand);
+    Serial.write(incomingCommand);
     processIncomingCommand(incomingCommand);
   }
 }
